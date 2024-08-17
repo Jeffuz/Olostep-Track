@@ -126,7 +126,7 @@ async function autoScroll(page) {
 
 
 // Usage
-const targetUrl = 'https://jasonyay210.github.io/portfolio/'; // Replace with your target URL
+const targetUrl = 'https://jasonyay210.github.io/portfolio/'; // Replace with target URL
 scrapeWebpage(targetUrl, {
   headless: false,
   scrollToBottom: true,
