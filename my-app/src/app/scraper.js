@@ -25,6 +25,11 @@ async function scrapeWebpage(url) {
       console.log('Paragraph:', $(element).text());
     });
 
+    // Extract and print elements with class 'some-class'
+    $('.some-class').each((index, element) => {
+      console.log('Element with class:', $(element).text());
+    });
+
     // Close the browser
     await browser.close();
   } catch (error) {
