@@ -1,9 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Landing/Hero";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
-    </main>
+    <div className="flex flex-col gap-10">
+      <Navbar/>
+      <Hero />
+    </div>
   );
 }
