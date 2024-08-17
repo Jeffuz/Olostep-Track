@@ -1,7 +1,14 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+
+import React, { useState } from "react";
 
 const Hero = () => {
+  const [url, setUrl] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center justify-center flex-1 text-center w-full max-w-6xl px-4 md:px-6 lg:px-8 text-[#333333] gap-5 tracking-wider">
@@ -10,7 +17,7 @@ const Hero = () => {
           Extract and Unlock the Web&apos;s Hidden Secrets with a Click
         </div>
         {/* Subtitle */}
-        <div className="text-md max-w-3xl md:text-lg lg:text-xl">
+        <div className="text-base max-w-3xl md:text-md lg:text-lg">
           <span className="font-bold">
             Instantly transform any URL into actionable data.
           </span>{" "}
@@ -21,18 +28,34 @@ const Hero = () => {
           the information in <span className="font-bold">real-time</span>.
           Deployed with ease, ensuring{" "}
           <span className="font-bold">accuracy and efficiency</span> at every
-          step
+          step.
         </div>
-        {/* CTA */}
-        <Link href={"/scrape"}>
-          <button className="bg-black1 hover:bg-black1/80 transition duration-300 text-white py-4 px-8 rounded-md shadow-md font-medium">
-            Click to Start Scraping
+        {/* Text field for url */}
+        <form
+          onSubmit={() => {
+            handleSubmit;
+          }}
+          className="w-full max-w-lg"
+        >
+          <input
+            type="url"
+            placeholder="Enter URL to scrape"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            required
+          />
+          <button
+            type="submit"
+            className="mt-4 bg-black1 hover:bg-black1/80 transition duration-300 text-white py-4 px-8 rounded-md shadow-md font-medium w-full"
+          >
+            Start Scraping
           </button>
-        </Link>
+        </form>
         {/* Fine Print */}
-        <div className="text-sm  max-w-md text-black1/70">
+        <div className="md:text-sm text-xs max-w-md text-black1/70 mt-4">
           Get precise data from any webpage in seconds. Start now and experience
-          seamless data extraction with just one click.
+          seamless data extraction with just one link.
         </div>
       </div>
     </div>

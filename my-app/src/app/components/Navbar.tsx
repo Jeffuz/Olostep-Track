@@ -82,7 +82,7 @@ const Navbar = () => {
             // } bg-teal3 absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center`}
           >
             <button className="items-center mt-4 lg:mt-0 text-black1 transition duration-300 border-b-2 border-b-transparent hover:border-b-2 hover:border-b-black1 px-2 hidden lg:flex">
-              <Link href="https://github.com/Jeffuz/Olostep-Track">
+              <Link href="https://github.com/Jeffuz/Olostep-Track" target="blank_">
                 Github Repo
               </Link>
             </button>
