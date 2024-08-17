@@ -12,7 +12,6 @@ async function scrapeWebpage(url, options = {}) {
     scrollToBottom = false,
     extractImages = false,
     extractLinks = false,
-    outputFile = null,
   } = options;
 
 let browser;
@@ -56,6 +55,10 @@ await page.waitForSelector('#element', { visible: true });
     // Extract and print the title
     const title = $('title').text();
     console.log('Title:', title);
+
+    // Generating title for JSON file
+    const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const outputFile = `${safeTitle}.json`;
 
     // Extract and print all paragraph text
     $('p').each((index, element) => {
