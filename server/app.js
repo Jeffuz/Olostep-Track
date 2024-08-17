@@ -1,44 +1,27 @@
-const puppeteer = require('puppeteer');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
 
-(async () => {
+const bodyParser = require("body-parser");
 
-    const browser = await puppeteer.launch();
+require("./database");
 
-    const page = await browser.newPage();
+const app = express();
 
-    // URL to scrape
-    await page.goto('https://quotes.toscrape.com/');
-    
-    const quotes = await page.evaluate(() => {
-        const quoteElements = document.querySelectorAll('.quote');
-        const quotesArray = [];
+app.use(cors());
+app.use(bodyParser.json());
 
-        for(const quoteElement of quoteElements) {
-            const quoteText = quoteElement.querySelector('.text').innerText;
-            const author = quoteElement.querySelector('.author').innerText;
-            
-            const tagElements = quoteElement.querySelectorAll('.tags .tag');
-            const tagsArray = [];
+app.use(express.urlencoded({ extended: false }));
 
-            for(const tagElement of tagElements) {
-                const tagLabel = tagElement.innerText;
-                tagsArray.push(tagLabel);
-            }
+app.get("/ping", (req, res) => {
+    res.status(200).send("Server Is Up!");
+});
 
+app.use("", (req, res) => {
+    res.status(404).send("Not Found");
+});
 
-            quotesArray.push({
-                quote: quoteText,
-                author: author,
-                tags: tagsArray
-            });
+app.listen(process.env.PORT || 5000, () => {
+    console.log("listning...");
+});
 
-        }
-        
-        return quotesArray;
-    });
-
-    console.log(quotes);
-
-    await browser.close();
-
-})();
