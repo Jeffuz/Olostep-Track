@@ -1,0 +1,85 @@
+{
+  "url": "https://jasonyay210.github.io/portfolio/",
+  "title": "Hyperspace by HTML5 UP",
+  "paragraphs": [
+    "\t\n\t\t\t\t\t\t\t\t\t",
+    "",
+    "I am currently looking for a Co-op from august 2024 to next fall 2025",
+    "I will be building 5 AI projects in 5 weeks, and as my final project, I will take a startup's current backlog and build it to meet their business requirements.",
+    "Assess the quality of AI-generated writing based on rubrics such as factuality, completeness, brevity, and grammatical correctness\n\t\t\t\t\t\t\t\tReview and provide feedback on the work of other writers\n\t\t\t\t\t\t\t\tCreate high-quality original responses to prompts to guide the AI model's responses\n\t\t\t\t\t\t\t\tGain experience in the field of AI and contribute to the improvement of AI models\n\t\t\t\t\t\t\t\t",
+    "Ensured a safe environment by engaging with guests about rules\n\t\t\t\t\t\t\t\tCultivated a welcoming environment by managing weeds, flowers, and chickens\n\t\t\t\t\t\t\t\tConducted multiple tours around the garden for new guests during the winter event\n\t\t\t\t\t\t\t\t",
+    "Implemented HTTP requests for data retrieval and JSON parsing\n\t\t\t\t\t\t\t\t\t\tIncorporated the youtube_player_flutter plugin for video playback, details, and thumbnails and the Google Cloud API key for the search functionality\n\t\t\t\t\t\t\t\t\t\tDeveloped features for searching videos, managing favorites, and viewing history\n\t\t\t\t\t\t\t\t\t\tEnsured cross-platform compatibility using both Android and IOS emulators\n\t\t\t\t\t\t\t\t\t\t",
+    "Developed a C# front-end application using the MVC (Model-View-Controller) architectural pattern in Visual Studio\n\t\t\t\t\t\t\t\t\t\tDeveloped a C# frontend application to consume data from a RESTful web service\n\t\t\t\t\t\t\t\t\t\tIncorporated jQuery, BootStrap, and Datatables plugins for UI enhancements\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t",
+    "Developed a professional website for the iSchool by fetching data from Ischool's web service API using a proxy server\n\t\t\t\t\t\t\t\t\t\tUsed React hooks for managing state and side effects in the application \n\t\t\t\t\t\t\t\t\t\tUtilized Material-UI components for designing and implementing user-friendly interfaces\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t",
+    "Developed a database application for an academic department to facilitate collaboration between faculty and student researchers using search functionalities with keywords\n\t\t\t\t\t\t\t\t\t\tImplemented a system using abstract methods to store abstracts of faculty and student research interests, creating a small-scale digital library\n\t\t\t\t\t\t\t\t\t\tAdapted JDBC for MySQL database connectivity, executing SQL operation and handling exceptions effectively\n\t\t\t\t\t\t\t\t\t\tEnsuring security through password encryption using the SHA-1 hashing algorithm for user login\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t",
+    "Developed an AI Algorithm Trading Bot using Python, Pandas, and TensorFlow\n\t\t\t\t\t\t\t\t\t\tUtilizes LSTM (Neural Network) and unsupervised learning for stock prediction, with results visualized using matplotlib\n\t\t\t\t\t\t\t\t\t\tAdvancing skills in Python, Artificial intelligence, algorithms, and data manipulation\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t",
+    "Jc3496(at)(g).rit.edu",
+    "JasonYay210(at)gmail.com"
+  ],
+  "elementsWithClass": [],
+  "images": [
+    "images/flutter.JPG",
+    "images/mvc_project.png",
+    "images/react.JPG",
+    "images/digital_library.png",
+    "images/colab.JPG"
+  ],
+  "links": [
+    {
+      "text": "Jason",
+      "href": "#intro"
+    },
+    {
+      "text": "Experience",
+      "href": "#one"
+    },
+    {
+      "text": "Projects",
+      "href": "#two"
+    },
+    {
+      "text": "Get in touch",
+      "href": "#three"
+    },
+    {
+      "text": "GitHub",
+      "href": "https://github.com/JasonYay210"
+    },
+    {
+      "text": "LinkedIn",
+      "href": "https://www.linkedin.com/in/jason-rit/"
+    },
+    {
+      "text": "",
+      "href": "https://www.youtube.com/shorts/WvLEp99kt80"
+    },
+    {
+      "text": "",
+      "href": "https://github.com/JasonYay210/MVC-Ischool"
+    },
+    {
+      "text": "",
+      "href": "https://people.rit.edu/jc3496/ISTE340/p2_Jason_Chen/"
+    },
+    {
+      "text": "",
+      "href": "https://github.com/JasonYay210/Digital-Library"
+    },
+    {
+      "text": "",
+      "href": "#"
+    },
+    {
+      "text": "GitHub",
+      "href": "https://github.com/JasonYay210"
+    },
+    {
+      "text": "LinkedIn",
+      "href": "https://www.linkedin.com/in/jason-rit/"
+    },
+    {
+      "text": "HTML5 UP",
+      "href": "http://html5up.net"
+    }
+  ]
+}

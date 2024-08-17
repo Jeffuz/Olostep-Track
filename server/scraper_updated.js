@@ -12,7 +12,7 @@ async function scrapeWebpage(url, options = {}) {
     scrollToBottom = false,
     extractImages = false,
     extractLinks = false,
-    //outputFile = null,
+    outputFile = null,
   } = options;
 
 let browser;
@@ -86,10 +86,10 @@ await page.waitForSelector('#element', { visible: true });
     console.log(JSON.stringify(result, null, 2));
 
     // Save to file if outputFile is specified
-   /* if (outputFile) {
+    if (outputFile) {
       await fs.writeFile(outputFile, JSON.stringify(result, null, 2));
       console.log(`Results saved to ${outputFile}`);
-    }*/
+    }
 
       return result;
 
@@ -132,5 +132,5 @@ scrapeWebpage(targetUrl, {
   scrollToBottom: true,
   extractImages: true,
   extractLinks: true,
-  //outputFile: 'scrape_result.json',
+  outputFile: 'scrape_result.json',
 });
