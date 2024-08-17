@@ -26,7 +26,7 @@ const TeamCards = () => {
       {/* Title + description */}
       <div className="flex flex-col items-center">
         <div className="text-3xl font-semibold ">Meet the Team</div>
-        <div className="text-lg text-gray-700 mt-2 text-center max-w-3xl">
+        <div className="text-lg text-gray-700 mt-2 text-center max-w-3xl px-2">
           Our dedicated team is focused on delivering powerful solutions, from
           building dynamic web scrapers to deploying full-stack applications.
         </div>

@@ -1,12 +1,36 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
   const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      if (response.ok) {
+        router.push("/scrape");
+      } else {
+        console.error("API call failed");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,12 +55,7 @@ const Hero = () => {
           step.
         </div>
         {/* Text field for url */}
-        <form
-          onSubmit={() => {
-            handleSubmit;
-          }}
-          className="w-full max-w-lg"
-        >
+        <form onSubmit={handleSubmit} className="w-full max-w-lg">
           <input
             type="url"
             placeholder="Enter URL to scrape"
@@ -47,9 +66,14 @@ const Hero = () => {
           />
           <button
             type="submit"
-            className="mt-4 bg-black1 hover:bg-black1/80 transition duration-300 text-white py-4 px-8 rounded-md shadow-md font-medium w-full"
+            className={`mt-4 ${
+              loading
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-black1 hover:bg-black1/80"
+            } transition duration-300 text-white py-4 px-8 rounded-md shadow-md font-medium w-full`}
+            disabled={loading}
           >
-            Start Scraping
+            {loading ? "Processing..." : "Start Scraping"}
           </button>
         </form>
         {/* Fine Print */}
