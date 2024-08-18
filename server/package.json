@@ -20,5 +20,8 @@
     "i": "^0.3.7",
     "mongoose": "^8.5.3",
     "puppeteer": "^23.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
