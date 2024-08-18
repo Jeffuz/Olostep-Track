@@ -36,7 +36,7 @@ const ScrapePage = () => {
     const fetchScrapedData = async (url: string) => {
       try {
         // HTTP request
-        const response = await fetch("/api/scrape", {
+        const response = await fetch("http://localhost:5000/scrape", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

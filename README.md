@@ -74,6 +74,3 @@ The backend of Olostep Track is built using Node.js, Express, and MongoDB. Follo
 
 - **MongoDB Connection Issues**: Ensure that your MongoDB URI is correctly formatted in the `.env` file, and that the user has the correct permissions to access the database.
 - **Port Conflicts**: If `localhost:3000` or `localhost:5000` is already in use, you can modify the port in the `package.json` scripts or `.env` file.
-
-
-
