@@ -21,7 +21,12 @@ let browser;
   try {
     // Launch the browser
      browser = await puppeteer.launch({
-        headless: true
+        headless: true,
+        args: ['--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--remote-debugging-port=9222']
      }); 
     const page = await browser.newPage();
 
