@@ -23,7 +23,10 @@ let browser;
     //  browser = await puppeteer.launch({
     //     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
     //  }); 
-     browser = await puppeteer.launch();
+     browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+     });
     const page = await browser.newPage();
 
 
