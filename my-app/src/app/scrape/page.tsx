@@ -20,7 +20,7 @@ interface ScrapeDataItem {
     width: number;
     height: number;
   };
-  clear_data: {
+  clean_data: {
     url: string;
     title: string;
     paragraphs: string[];
@@ -60,7 +60,7 @@ const ScrapePage = () => {
     const fetchScrapedData = async (url: string) => {
       try {
         // HTTP request
-        const response = await fetch("http://localhost:5000/scrape", {
+        const response = await fetch("http://localhost:4000/scrape", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const ScrapePage = () => {
 
         // Valid response, save scraped content
         const data = await response.json();
-        console.log(data.clear_data);
+        console.log(data.clean_data);
         setScrapeData(data);
       } catch (error) {
         console.error("Error:", error);
@@ -139,21 +139,21 @@ const ScrapePage = () => {
           {/* Url */}
           <div>
             <span className="text-lg font-semibold">URL: </span>
-            <Link href={`${scrapeData.clear_data.url}`} target="_blank">
+            <Link href={`${scrapeData.clean_data.url}`} target="_blank">
               <span className="text-blue-600 hover:underline">
-                {scrapeData.clear_data.url}
+                {scrapeData.clean_data.url}
               </span>
             </Link>
           </div>
           {/* Title */}
           <div>
             <span className="text-lg font-semibold">Title:</span>{" "}
-            {scrapeData.clear_data.title}
+            {scrapeData.clean_data.title}
           </div>
           {/* Paragraphs */}
           <div>
             <span className="text-lg font-semibold">Paragraphs:</span>{" "}
-            {scrapeData.clear_data.paragraphs.map((paragraph, index) => (
+            {scrapeData.clean_data.paragraphs.map((paragraph, index) => (
               <div key={index}>{paragraph}</div>
             ))}
           </div>
@@ -161,7 +161,7 @@ const ScrapePage = () => {
           <div>
             <span className="text-lg font-semibold">Images:</span>
             <ul>
-              {scrapeData.clear_data.images.map((image, index) => (
+              {scrapeData.clean_data.images.map((image, index) => (
                 <li key={index}>{image}</li>
               ))}
             </ul>
@@ -170,7 +170,7 @@ const ScrapePage = () => {
           <div>
             <div className="text-lg font-semibold">Links:</div>
             <ul>
-              {scrapeData.clear_data.links.map((link, index) => (
+              {scrapeData.clean_data.links.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
