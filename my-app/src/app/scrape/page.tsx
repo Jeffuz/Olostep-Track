@@ -8,16 +8,33 @@ import { FaArrowRight, FaCode, FaBrush, FaChartBar } from "react-icons/fa";
 // Syntax highlight for unscraped data
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import pretty from 'pretty';
 
-// Models
+// Model
 interface ScrapeDataItem {
-  raw_data: string;
-  clean_data: string;
+  raw_data: {
+    url: string;
+    title: string;
+    html: string;
+    width: number;
+    height: number;
+  };
+  clean_data: {
+    url: string;
+    title: string;
+    paragraphs: string[];
+    elementsWithClass: string[];
+    images: string[];
+    links: {
+      text: string;
+      href: string;
+    }[];
+  };
 }
 
 const ScrapePage = () => {
   const searchParams = useSearchParams();
-  const [scrapeData, setScrapeData] = useState<ScrapeDataItem[] | null>(null);
+  const [scrapeData, setScrapeData] = useState<ScrapeDataItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [userUrl, setUserUrl] = useState("");
 
@@ -42,7 +59,7 @@ const ScrapePage = () => {
     const fetchScrapedData = async (url: string) => {
       try {
         // HTTP request
-        const response = await fetch("api/scrape", {
+        const response = await fetch("http://localhost:5000/scrape", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,6 +116,8 @@ const ScrapePage = () => {
 
     // Html page
     if (currentPage === "html") {
+      // prettier
+      const formattedHtml = pretty(scrapeData.raw_data.html);
       return (
         <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
           <SyntaxHighlighter
@@ -106,7 +125,7 @@ const ScrapePage = () => {
             style={solarizedlight}
             className="custom-scrollbar"
           >
-            {scrapeData[0].raw_data}
+            {formattedHtml}
           </SyntaxHighlighter>
         </div>
       );
@@ -116,7 +135,7 @@ const ScrapePage = () => {
     if (currentPage === "cleaned") {
       return (
         <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
-          <div>{scrapeData[1].clean_data}</div>
+          {/* <div>{scrapeData.clear_data}</div> */}
         </div>
       );
     }
