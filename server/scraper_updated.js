@@ -30,11 +30,13 @@ let browser;
     await page.setDefaultNavigationTimeout(timeout);
 
    // Navigate to the URL and wait for the selector
-   await page.goto(url, { waitUntil: 'networkidle0' });
+   const response = await page.goto(url, { waitUntil: 'networkidle0' });
    
-   /*In the Puppeteer code, not in the options object if u want to wait for visible elements
-await page.waitForSelector('#element', { visible: true });
-*/
+   // Check for HTTP errors
+   if (!response.ok()) {
+     throw new Error(`HTTP error! status: ${response.status()}`);
+   }
+
    await page.waitForSelector(waitForSelector, { visible: true });
 
    // Scroll to the bottom if option is set
