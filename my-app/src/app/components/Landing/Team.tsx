@@ -36,18 +36,18 @@ const TeamCards = () => {
         <div className="flex flex-wrap justify-center gap-5">
           <TeamCard
             name="Jeff Zhang"
-            role="Frontend Developer"
+            role="Fullstack Developer"
             image="/jeffzhang.jpg"
           />
           <TeamCard
-            name="Jeff Zhang"
-            role="Frontend Developer"
-            image="/jeffzhang.jpg"
+            name="Jason Chen"
+            role="Backend Developer"
+            image="/jason_chen.png"
           />
           <TeamCard
-            name="Jeff Zhang"
-            role="Frontend Developer"
-            image="/jeffzhang.jpg"
+            name="Sravya Chandolu"
+            role="Backend Developer"
+            image="/Sravya_chandolu.png"
           />
           <TeamCard
             name="Jeff Zhang"

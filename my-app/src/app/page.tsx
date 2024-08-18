@@ -1,6 +1,8 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Landing/Hero";
 import Team from "./components/Landing/Team";
+import Image from "next/image";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -8,11 +10,18 @@ export default function Home() {
       <Navbar />
       <Hero />
       <div className="flex justify-center">
-        <div className="text-white bg-black w-[80%] aspect-video p-10 rounded-3xl">
-          [Image of inputted url with output data page]
+        <div className="relative w-[80%] aspect-video p-10 bg-black rounded-3xl shadow-2xl">
+          <Image
+            src="/olostep_track.png"
+            alt="Image of inputted url with output data page"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-3xl"
+          />
         </div>
       </div>
       <Team />
+      <Footer/>
     </div>
   );
 }
