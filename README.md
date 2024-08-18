@@ -46,9 +46,10 @@ The backend of Olostep Track is built using Node.js, Express, and MongoDB. Follo
 
 ### Getting Started
 
-1. **Create a `.env` file** in the root directory of the backend (e.g., `Olostep-Track/server`) and add your MongoDB Atlas connection URI:
+1. **Create a `.env` file** in the root directory of the backend (e.g., `Olostep-Track/server`) and add your MongoDB Atlas connection URI and backend server url:
     ```plaintext
     MONGO_ATLAS_URI="your-mongodb-uri-here"
+    NEXT_PUBLIC_SERVER_URL = "http://localhost:5000"
     ```
    Replace `"your-mongodb-uri-here"` with the connection string provided by MongoDB Atlas.
 
