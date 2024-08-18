@@ -20,7 +20,9 @@ async function scrapeWebpage(url, options = {}) {
 let browser;
   try {
     // Launch the browser
-     browser = await puppeteer.launch(); 
+     browser = await puppeteer.launch({
+        headless: true
+     }); 
     const page = await browser.newPage();
 
 
