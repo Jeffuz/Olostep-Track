@@ -11,26 +11,10 @@ const Hero = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    try {
-      const response = await fetch("/api/scrape", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
-
-      if (response.ok) {
-        router.push("/scrape");
-      } else {
-        console.error("API call failed");
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setLoading(false);
-    }
+    // encode url
+    const encodedUrl = encodeURIComponent(url);
+    router.push(`/scrape?url=${encodedUrl}`);
+    setLoading(false);
   };
 
   return (
