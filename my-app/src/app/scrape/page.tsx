@@ -5,6 +5,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { FaArrowRight } from "react-icons/fa";
 
+// Syntax highlight for unscraped data
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 const ScrapePage = () => {
   const searchParams = useSearchParams();
   const [scrapeData, setScrapeData] = useState<string | null>(null);
@@ -13,15 +17,23 @@ const ScrapePage = () => {
 
   const router = useRouter();
 
+  // New input link
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const encodedUrl = encodeURIComponent(userUrl);
-    router.push(`/scrape?url=${encodedUrl}`);
+    setLoading(true);
+    try {
+      const encodedUrl = encodeURIComponent(userUrl);
+      router.push(`/scrape?url=${encodedUrl}`);
+    } catch (error) {
+      console.log("Error: ", error);
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     const fetchScrapedData = async (url: string) => {
       try {
-        // http request
+        // HTTP request
         const response = await fetch("/api/scrape", {
           method: "POST",
           headers: {
@@ -30,7 +42,7 @@ const ScrapePage = () => {
           body: JSON.stringify({ url }),
         });
 
-        // valid response, save scraped content
+        // Valid response, save scraped content
         const data = await response.json();
         setScrapeData(data.html);
       } catch (error) {
@@ -40,7 +52,7 @@ const ScrapePage = () => {
       }
     };
 
-    // retrieve current page url query
+    // Retrieve current page URL query
     const url = searchParams.get("url");
 
     if (url) {
@@ -51,26 +63,38 @@ const ScrapePage = () => {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col overflow-x-hidden">
+    <div className="flex flex-col overflow-x-hidden min-h-screen justify-between">
       {/* Navbar */}
       <Navbar />
+
       {/* Page content */}
-      <div>
-        {/* Sidebar */}
-        <div></div>
-        {/* Display Content */}
-        <div>
-          {loading ? (
-            <div>Loading...</div>
-          ) : scrapeData ? (
-            <div>{scrapeData}</div>
-          ) : (
-            <div>No content available.</div>
-          )}
-        </div>
+      <div className="flex flex-col items-center justify-center p-6 h-max">
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="w-12 h-12 border-4 border-t-4 border-t-transparent border-gray-600 rounded-full animate-spin"></div>
+          </div>
+        ) : scrapeData ? (
+          <div className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-2xl overflow-y-auto max-h-[75vh]">
+            {/* Syntax highlight */}
+            <SyntaxHighlighter language="html" style={solarizedlight}>
+              {scrapeData}
+            </SyntaxHighlighter>
+          </div>
+        ) : (
+          <div className="text-center">
+            <div className="text-3xl font-bold mb-4">
+              Welcome to Olostep Track
+            </div>
+            <div className="text-lg text-gray-700 mb-8">
+              Enter a URL below to scrape its content. We’ll display the HTML
+              and contents readable format.
+            </div>
+          </div>
+        )}
       </div>
+
       {/* Url input */}
-      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 flex justify-center w-full">
+      <div className="flex justify-center w-full mb-5">
         <form
           className="relative w-full md:max-w-md md:px-0 px-4"
           onSubmit={handleSubmit}
@@ -78,7 +102,7 @@ const ScrapePage = () => {
           <input
             type="url"
             placeholder="Enter URL"
-            className="w-full py-4 pl-6 pr-16 bg-black1 text-white rounded-full shadow-lg focus:outline-none"
+            className="w-full py-4 pl-6 pr-16 bg-black text-white rounded-full shadow-lg focus:outline-none"
             value={userUrl}
             onChange={(e) => setUserUrl(e.target.value)}
           />
