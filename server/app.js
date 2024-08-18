@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/scrape", router);
+
 app.get("/ping", (req, res) => {
     res.status(200).send("Server Is Up!");
 });
