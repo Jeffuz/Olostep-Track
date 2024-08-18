@@ -20,7 +20,7 @@ router.post("", validateRequest, async (req, res) => {
         if(getDoc) {
             return res.json({
                 raw_data: getRawDoc,
-                clear_data: getDoc
+                clean_data: getDoc
             });
         }
 
