@@ -2,6 +2,10 @@ const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const fs = require('fs').promises;
 
+const mongoose = require('mongoose');
+const ScrapeResult = require('./scrape_result');
+require('./database');
+
 async function scrapeWebpage(url, options = {}) {
 
   //will be used as default values
@@ -140,6 +144,11 @@ await page.waitForSelector('#element', { visible: true });
       await fs.writeFile(outputFile, JSON.stringify(result, null, 2));
       console.log(`Results saved to ${outputFile}`);
     }
+
+    // Saving to mongo
+    const scrapeResult = new ScrapeResult(result);
+    await scrapeResult.save();
+    console.log('Scape result saved to MongoDB');
 
       return result;
 
