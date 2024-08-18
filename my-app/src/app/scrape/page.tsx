@@ -60,17 +60,20 @@ const ScrapePage = () => {
     const fetchScrapedData = async (url: string) => {
       try {
         // HTTP request
-        const response = await fetch("http://localhost:4000/scrape", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ url }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/scrape`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url }),
+          }
+        );
 
         // Valid response, save scraped content
         const data = await response.json();
-        console.log(data.clean_data);
+        // console.log(data.clean_data);
         setScrapeData(data);
       } catch (error) {
         console.error("Error:", error);
