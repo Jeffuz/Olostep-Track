@@ -5,7 +5,7 @@ const scrapeResultSchema = new mongoose.Schema({
         type: String, enum: ["Raw", "Clean"]
     },
     url: { type: String, required: true },
-    data: {type: String},
+    html: {type: String},
     title: { type: String, required: true },
     paragraphs: [String],
     elementsWithClass: [String],

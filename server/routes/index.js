@@ -39,7 +39,7 @@ router.post("", validateRequest, async (req, res) => {
          );
 
         await createWebpage.save();
-
+            await createRawWebpage.save();
         // after saving we will return the result
 
         // to be transformed if not yet

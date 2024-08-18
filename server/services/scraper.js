@@ -145,6 +145,7 @@ let browser;
       return {
         raw_data: {
             url,
+            title: result.title,
             ...pageData
         },
         clean_data: result
