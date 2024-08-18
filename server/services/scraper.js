@@ -142,7 +142,13 @@ let browser;
     // log results
     console.log('cleaned data:',JSON.stringify(result, null, 2));
 
-      return result;
+      return {
+        raw_data: {
+            url,
+            ...pageData
+        },
+        clean_data: result
+      };
 
     
   } catch (error) {

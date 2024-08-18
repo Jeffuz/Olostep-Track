@@ -9,11 +9,19 @@ const router = express.Router();
 router.post("", validateRequest, async (req, res) => {
     try {
         const getDoc = await scrapeModel.findOne({
-            url: req.body.url
+            url: req.body.url,
+            dataType: "Clean"
+        });
+        const getRawDoc = await scrapeModel.findOne({
+            url: req.body.url,
+            dataType: "Raw"
         });
 
         if(getDoc) {
-            return res.json(getDoc);
+            return res.json({
+                raw_data: getRawDoc,
+                clear_data: getDoc
+            });
         }
 
         const scrapedData = await scrapeWebpage(
@@ -23,7 +31,12 @@ router.post("", validateRequest, async (req, res) => {
             customClass: 'some-class',
             outputFile: 'scrape_result.json'});
 
-        const createWebpage = new scrapeModel(scrapedData);
+        const createWebpage = new scrapeModel({
+            ...scrapedData.clean_data, dataType: "Clean"}
+         );
+        const createRawWebpage = new scrapeModel({
+            ...scrapedData.raw_data, dataType: "Raw"}
+         );
 
         await createWebpage.save();
 
