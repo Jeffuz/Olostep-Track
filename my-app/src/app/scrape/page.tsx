@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { FaArrowRight, FaCode, FaBrush, FaChartBar } from "react-icons/fa";
@@ -202,4 +202,16 @@ const ScrapePage = () => {
   );
 };
 
-export default ScrapePage;
+export default function ScrapePageWrapper() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-full">
+          <div className="w-12 h-12 border-4 border-t-4 border-t-transparent border-gray-600 rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <ScrapePage />
+    </Suspense>
+  );
+}
