@@ -8,6 +8,22 @@ const router = express.Router();
 
 router.post("", validateRequest, async (req, res) => {
     try {
+        const getDoc = await scrapeModel.findOne({
+            url: req.body.url,
+            dataType: "Clean"
+        });
+        const getRawDoc = await scrapeModel.findOne({
+            url: req.body.url,
+            dataType: "Raw"
+        });
+
+        if(getDoc) {
+            return res.json({
+                raw_data: getRawDoc,
+                clear_data: getDoc
+            });
+        }
+
         const scrapedData = await scrapeWebpage(
             req.body.url, {scrollToBottom: true,
             extractImages: true,
@@ -16,13 +32,14 @@ router.post("", validateRequest, async (req, res) => {
             outputFile: 'scrape_result.json'});
 
         const createWebpage = new scrapeModel({
-            url: req.body.url,
-            title: scrapedData.title,
-        ///
-        });
+            ...scrapedData.clean_data, dataType: "Clean"}
+         );
+        const createRawWebpage = new scrapeModel({
+            ...scrapedData.raw_data, dataType: "Raw"}
+         );
 
         await createWebpage.save();
-
+            await createRawWebpage.save();
         // after saving we will return the result
 
         // to be transformed if not yet

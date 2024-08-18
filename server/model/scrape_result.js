@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const scrapeResultSchema = new mongoose.Schema({
+    dataType: {
+        type: String, enum: ["Raw", "Clean"]
+    },
     url: { type: String, required: true },
+    html: {type: String},
     title: { type: String, required: true },
     paragraphs: [String],
     elementsWithClass: [String],

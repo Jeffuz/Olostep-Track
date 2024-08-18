@@ -20,14 +20,7 @@ async function scrapeWebpage(url, options = {}) {
 let browser;
   try {
     // Launch the browser
-     browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--remote-debugging-port=9222']
-     }); 
+     browser = await puppeteer.launch(); 
     const page = await browser.newPage();
 
 
@@ -41,13 +34,16 @@ let browser;
    if (!response.ok()) {
      throw new Error(`HTTP error! status: ${response.status()}`);
    }
+   else {
+    console.log("response is coming ........")
+   }
 
    await page.waitForSelector(waitForSelector, { visible: true });
-
-   // Scroll to the bottom if option is set
-   if (scrollToBottom) {
-    await autoScroll(page);
-  }
+   console.log("here   ...........e")
+//    // Scroll to the bottom if option is set
+//    if (scrollToBottom) {
+//     await autoScroll(page);
+//   }
 
 
   // Wait for images to load - avoiding null in images array in o/p, this will wait for images with lazy loading and dynamic images to load first
@@ -64,21 +60,24 @@ let browser;
   });
 
 
+  
 
 
+  console.log("🚀 ~ evaluaated :")
     // Get the page content
     const content = await page.content();
+    
 
 
     //to get raw data of the page
-    const pageData = await page.evaluate(() => {
-    return{
-        html: document.documentElement.innerHTML.replace(/[\t\n]/g, '').trim(),
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight,
-    };
-    });
-    console.log('raw data:',pageData);
+    // const pageData = await page.evaluate(() => {
+    // return{
+    //     html: document.documentElement.innerHTML.replace(/[\t\n]/g, '').trim(),
+    //     width: document.documentElement.clientWidth,
+    //     height: document.documentElement.clientHeight,
+    // };
+    // });
+    // console.log('raw data:',pageData);
 
     // Load the HTML content into cheerio
     const $ = cheerio.load(content);
@@ -93,8 +92,16 @@ let browser;
       links: [],
     };
 
+    const element = $('[aria-label="abc"]');
+
+    console.log("🚀 ~ element  :", element)
+
+    if(element.lenght > 0) {
+        throw new Error(`HTTP error! status: paid article`);
+    }
+
     // Extract and print the title
-    const title = $('title').text();
+    const title = $('[data-testid="storyTitle"]').text();
     console.log('Title:', title);
 
     
@@ -125,6 +132,10 @@ let browser;
           const src = $(element).attr('src');
           if (src && !src.startsWith('data:')) result.images.push(src);
         });
+        // $('figure').each((index, element) => {
+        //     const src = $(element).attr('src');
+        //     if (src && !src.startsWith('data:')) result.images.push(src);
+        //   });
       }
     // Extract links if option is set, also removed duplicate links
     if (extractLinks) {
@@ -142,14 +153,7 @@ let browser;
     // log results
     console.log('cleaned data:',JSON.stringify(result, null, 2));
 
-      return {
-        raw_data: {
-            url,
-            title: result.title,
-            ...pageData
-        },
-        clean_data: result
-      };
+      return result;
 
     
   } catch (error) {
