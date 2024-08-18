@@ -1,0 +1,5 @@
+[phases.setup]
+nixLibs = []
+
+[build]
+nixpacksVersion = "1.15.0"
