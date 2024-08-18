@@ -15,7 +15,7 @@ const ScrapePage = () => {
   const [loading, setLoading] = useState(true);
   const [userUrl, setUserUrl] = useState("");
 
-  const [currentPage, setCurrentPage] = useState("html"); //default state html
+  const [currentPage, setCurrentPage] = useState("html"); // default state html
 
   const router = useRouter();
 
@@ -64,6 +64,66 @@ const ScrapePage = () => {
     }
   }, [searchParams]);
 
+  // Render content depending on pages
+  const renderContent = () => {
+    // Loading state
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="w-12 h-12 border-4 border-t-4 border-t-transparent border-gray-600 rounded-full animate-spin"></div>
+        </div>
+      );
+    }
+
+    // No query for /scrape
+    if (!scrapeData) {
+      return (
+        <div className="text-center">
+          <div className="text-3xl font-bold mb-4">
+            Welcome to Olostep Track
+          </div>
+          <div className="text-lg text-gray-700 mb-8">
+            Enter a URL below to scrape its content. We’ll display the HTML and
+            contents in a readable format.
+          </div>
+        </div>
+      );
+    }
+
+    // Html page
+    if (currentPage === "html") {
+      return (
+        <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
+          <SyntaxHighlighter
+            language="html"
+            style={solarizedlight}
+            className="custom-scrollbar"
+          >
+            {scrapeData}
+          </SyntaxHighlighter>
+        </div>
+      );
+    }
+
+    // Clean Page
+    if (currentPage === "cleaned") {
+      return (
+        <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
+          <div>Clean</div>
+        </div>
+      );
+    }
+
+    // Analytics Page
+    if (currentPage === "analytics") {
+      return (
+        <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
+          <div>Analytic</div>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col items-center overflow-x-hidden min-h-screen justify-between">
       <div className="flex flex-col items-center w-screen">
@@ -72,10 +132,14 @@ const ScrapePage = () => {
         {/* Appbar */}
         <div className="w-full max-w-6xl">
           <div className="flex justify-center gap-5">
-            {/* Html */}
+            {/* HTML */}
             <button
               onClick={() => setCurrentPage("html")}
-              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4"
+              className={`flex gap-1 text-center py-2 cursor-pointer transition px-4 ${
+                currentPage === "html"
+                  ? "text-black font-semibold"
+                  : "text-gray-600 hover:text-black"
+              }`}
             >
               <FaCode size={18} className="inline-block" />
               <div className="text-sm">HTML</div>
@@ -83,16 +147,23 @@ const ScrapePage = () => {
             {/* Cleaned */}
             <button
               onClick={() => setCurrentPage("cleaned")}
-              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4"
+              className={`flex gap-1 text-center py-2 cursor-pointer transition px-4 ${
+                currentPage === "cleaned"
+                  ? "text-black font-semibold"
+                  : "text-gray-600 hover:text-black"
+              }`}
             >
               <FaBrush size={18} className="inline-block" />
               <div className="text-sm">Cleaned</div>
             </button>
             {/* Analytics */}
             <button
-              disabled
               onClick={() => setCurrentPage("analytics")}
-              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4 line-through"
+              className={`flex gap-1 text-center py-2 cursor-pointer transition px-4 ${
+                currentPage === "analytics"
+                  ? "text-black font-semibold"
+                  : "text-gray-600 hover:text-black"
+              }`}
             >
               <FaChartBar size={18} className="inline-block" />
               <div className="text-sm">Analytics</div>
@@ -103,32 +174,7 @@ const ScrapePage = () => {
 
       {/* Page content */}
       <div className="flex flex-col items-center justify-center h-max w-full max-w-6xl">
-        {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="w-12 h-12 border-4 border-t-4 border-t-transparent border-gray-600 rounded-full animate-spin"></div>
-          </div>
-        ) : scrapeData ? (
-          <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
-            {/* Syntax highlight */}
-            <SyntaxHighlighter
-              language="html"
-              style={solarizedlight}
-              className="custom-scrollbar"
-            >
-              {scrapeData}
-            </SyntaxHighlighter>
-          </div>
-        ) : (
-          <div className="text-center">
-            <div className="text-3xl font-bold mb-4">
-              Welcome to Olostep Track
-            </div>
-            <div className="text-lg text-gray-700 mb-8">
-              Enter a URL below to scrape its content. We’ll display the HTML
-              and contents in a readable format.
-            </div>
-          </div>
-        )}
+        {renderContent()}
       </div>
 
       {/* Url input */}
