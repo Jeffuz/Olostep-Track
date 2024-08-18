@@ -1,85 +1,82 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-// const fs = require('fs').promises;
-
-// const ScrapeResult = require('./scrape_result');
 
 async function scrapeWebpage(url, options = {}) {
-
-  //will be used as default values
   const {
-   //headless = true,
-    timeout = 30000,
+    timeout = 60000,            // Increased timeout to handle heavier websites
     waitForSelector = 'body',
     scrollToBottom = false,
     extractImages = false,
     extractLinks = false,
-    customClass = 'some-class', //allowing class customization rather than just 'some-class'
+    customClass = 'some-class',
   } = options;
 
-let browser;
+  let browser;
   try {
-    // Launch the browser
-     browser = await puppeteer.launch({
-        headless: "new",
-        args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--remote-debugging-port=9222'],
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
-     }); 
+    browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--remote-debugging-port=9222'
+      ],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
+    });
+
     const page = await browser.newPage();
-
-
-    // Set a timeout for navigation
     await page.setDefaultNavigationTimeout(timeout);
 
-   // Navigate to the URL and wait for the selector
-   const response = await page.goto(url, { waitUntil: 'networkidle0' });
-   
-   // Check for HTTP errors
-   if (!response.ok()) {
-     throw new Error(`HTTP error! status: ${response.status()}`);
-   }
-
-   await page.waitForSelector(waitForSelector, { visible: true });
-
-   // Scroll to the bottom if option is set
-   if (scrollToBottom) {
-    await autoScroll(page);
-  }
-
-
-  // Wait for images to load - avoiding null in images array in o/p, this will wait for images with lazy loading and dynamic images to load first
-  await page.evaluate(async () => {
-    const imgElements = document.getElementsByTagName('img');
-    const imgPromises = [...imgElements].map(img => {
-      if (img.complete) return;
-      return new Promise((resolve, reject) => {
-        img.addEventListener('load', resolve);
-        img.addEventListener('error', reject);
-      });
+    // Optimize request handling to block unnecessary resources
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+      const resourceType = request.resourceType();
+      if (['image', 'stylesheet', 'font', 'media'].includes(resourceType)) {
+        request.abort();
+      } else {
+        request.continue();
+      }
     });
-    await Promise.all(imgPromises);
-  });
 
+    // Navigate to the URL
+    const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+    if (!response.ok()) {
+      throw new Error(`HTTP error! status: ${response.status()}`);
+    }
 
+    // Wait for the main content to load
+    await page.waitForSelector(waitForSelector, { visible: true });
 
+    // Scroll to the bottom if the option is set
+    if (scrollToBottom) {
+      await autoScroll(page);
+    }
+
+    // Wait for images to load completely
+    if (extractImages) {
+      await page.evaluate(async () => {
+        const images = Array.from(document.querySelectorAll('img'));
+        await Promise.all(images.map(img => {
+          if (img.complete) return;
+          return new Promise((resolve, reject) => {
+            img.addEventListener('load', resolve);
+            img.addEventListener('error', reject);
+          });
+        }));
+      });
+    }
 
     // Get the page content
     const content = await page.content();
 
-
-    //to get raw data of the page
-    const pageData = await page.evaluate(() => {
-    return{
-        html: document.documentElement.innerHTML.replace(/[\t\n]/g, '').trim(),
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight,
-    };
-    });
-    console.log('raw data:',pageData);
+    // Get raw data of the page
+    const pageData = await page.evaluate(() => ({
+      html: document.documentElement.innerHTML.replace(/[\t\n]/g, '').trim(),
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight,
+    }));
+    console.log('raw data:', pageData);
 
     // Load the HTML content into cheerio
     const $ = cheerio.load(content);
@@ -94,71 +91,57 @@ let browser;
       links: [],
     };
 
-    // Extract and print the title
-    const title = $('title').text();
-    console.log('Title:', title);
-
-    
-
-    // Extract and print all paragraph text
-    /*$('p').each((index, element) => {
-      result.paragraphs.push($(element).text());
-    });*/
-
+    // Extract paragraphs
     $('p').each((index, element) => {
-        const text = $(element).text().trim().replace(/\s+/g, ' ');
-        if (text) result.paragraphs.push(text);
-      });
+      const text = $(element).text().trim().replace(/\s+/g, ' ');
+      if (text) result.paragraphs.push(text);
+    });
 
-    // Extract and print elements with class 'some-class'
-   /* $('.some-class').each((index, element) => {
-      result.elementsWithClass.push($(element).text());
-    });*/
-
+    // Extract elements with the custom class
     $(`.${customClass}`).each((index, element) => {
-        const text = $(element).text().trim().replace(/\s+/g, ' ');
-        if (text) result.elementsWithClass.push(text);
-      });
+      const text = $(element).text().trim().replace(/\s+/g, ' ');
+      if (text) result.elementsWithClass.push(text);
+    });
 
-    // Extract images if option is set, images starting with data will not be printed
+    // Extract images
     if (extractImages) {
-        $('img').each((index, element) => {
-          const src = $(element).attr('src');
-          if (src && !src.startsWith('data:')) result.images.push(src);
-        });
-      }
-    // Extract links if option is set, also removed duplicate links
+      $('img').each((index, element) => {
+        const src = $(element).attr('src');
+        if (src && !src.startsWith('data:')) result.images.push(src);
+      });
+    }
+
+    // Extract links
     if (extractLinks) {
-        const uniqueLinks = new Set();
-        $('a').each((index, element) => {
-          const href = $(element).attr('href');
-          const text = $(element).text().trim();
-          if (href && !uniqueLinks.has(href)) {
-            uniqueLinks.add(href);
-            result.links.push({ text, href });
-          }
-        });
-      }
+      const uniqueLinks = new Set();
+      $('a').each((index, element) => {
+        const href = $(element).attr('href');
+        const text = $(element).text().trim();
+        if (href && !uniqueLinks.has(href)) {
+          uniqueLinks.add(href);
+          result.links.push({ text, href });
+        }
+      });
+    }
 
-    // log results
-    console.log('cleaned data:',JSON.stringify(result, null, 2));
+    // Log the cleaned data
+    console.log('cleaned data:', JSON.stringify(result, null, 2));
 
-      return {
-        raw_data: {
-            url,
-            title: result.title,
-            ...pageData
-        },
-        clean_data: result
-      };
+    return {
+      raw_data: {
+        url,
+        title: result.title,
+        ...pageData
+      },
+      clean_data: result
+    };
 
-    
   } catch (error) {
     console.error('An error occurred:', error);
-  }finally{
-    if(browser){
+  } finally {
+    if (browser) {
       // Close the browser
-    await browser.close();
+      await browser.close();
     }
   }
 }
