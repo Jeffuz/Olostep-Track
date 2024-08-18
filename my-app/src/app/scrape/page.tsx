@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCode, FaBrush, FaChartBar } from "react-icons/fa";
 
 // Syntax highlight for unscraped data
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -14,6 +14,8 @@ const ScrapePage = () => {
   const [scrapeData, setScrapeData] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [userUrl, setUserUrl] = useState("");
+
+  const [currentPage, setCurrentPage] = useState("html"); //default state html
 
   const router = useRouter();
 
@@ -63,20 +65,56 @@ const ScrapePage = () => {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col overflow-x-hidden min-h-screen justify-between">
-      {/* Navbar */}
-      <Navbar />
+    <div className="flex flex-col items-center overflow-x-hidden min-h-screen justify-between">
+      <div className="flex flex-col items-center w-screen">
+        {/* Navbar */}
+        <Navbar />
+        {/* Appbar */}
+        <div className="w-full max-w-6xl">
+          <div className="flex justify-center gap-5">
+            {/* Html */}
+            <button
+              onClick={() => setCurrentPage("html")}
+              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4"
+            >
+              <FaCode size={18} className="inline-block" />
+              <div className="text-sm">HTML</div>
+            </button>
+            {/* Cleaned */}
+            <button
+              onClick={() => setCurrentPage("cleaned")}
+              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4"
+            >
+              <FaBrush size={18} className="inline-block" />
+              <div className="text-sm">Cleaned</div>
+            </button>
+            {/* Analytics */}
+            <button
+              disabled
+              onClick={() => setCurrentPage("analytics")}
+              className="flex gap-1 text-center py-2 cursor-pointer text-gray-600 hover:text-black transition px-4 line-through"
+            >
+              <FaChartBar size={18} className="inline-block" />
+              <div className="text-sm">Analytics</div>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Page content */}
-      <div className="flex flex-col items-center justify-center p-6 h-max">
+      <div className="flex flex-col items-center justify-center h-max w-full max-w-6xl">
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <div className="w-12 h-12 border-4 border-t-4 border-t-transparent border-gray-600 rounded-full animate-spin"></div>
           </div>
         ) : scrapeData ? (
-          <div className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-2xl overflow-y-auto max-h-[75vh]">
+          <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
             {/* Syntax highlight */}
-            <SyntaxHighlighter language="html" style={solarizedlight}>
+            <SyntaxHighlighter
+              language="html"
+              style={solarizedlight}
+              className="custom-scrollbar"
+            >
               {scrapeData}
             </SyntaxHighlighter>
           </div>
@@ -87,7 +125,7 @@ const ScrapePage = () => {
             </div>
             <div className="text-lg text-gray-700 mb-8">
               Enter a URL below to scrape its content. We’ll display the HTML
-              and contents readable format.
+              and contents in a readable format.
             </div>
           </div>
         )}
