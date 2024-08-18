@@ -21,12 +21,13 @@ let browser;
   try {
     // Launch the browser
      browser = await puppeteer.launch({
-        headless: true,
+        headless: "new",
         args: ['--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
             '--disable-gpu',
-            '--remote-debugging-port=9222']
+            '--remote-debugging-port=9222'],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
      }); 
     const page = await browser.newPage();
 
