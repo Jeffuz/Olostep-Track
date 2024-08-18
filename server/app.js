@@ -5,6 +5,7 @@ const cors = require("cors");
 const router = require("./routes/index");
 
 const bodyParser = require("body-parser");
+const { validateRequest } = require("./middleware");
 
 require("./database");
 
@@ -15,7 +16,7 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/scrape", router);
+app.use("/scrape", validateRequest, router);
 
 app.get("/ping", (req, res) => {
     res.status(200).send("Server Is Up!");
