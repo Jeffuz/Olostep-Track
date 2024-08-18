@@ -8,6 +8,14 @@ const router = express.Router();
 
 router.post("", validateRequest, async (req, res) => {
     try {
+        const getDoc = await scrapeModel.findOne({
+            url: req.body.url
+        });
+
+        if(getDoc) {
+            return res.json(getDoc);
+        }
+
         const scrapedData = await scrapeWebpage(
             req.body.url, {scrollToBottom: true,
             extractImages: true,
@@ -15,11 +23,7 @@ router.post("", validateRequest, async (req, res) => {
             customClass: 'some-class',
             outputFile: 'scrape_result.json'});
 
-        const createWebpage = new scrapeModel({
-            url: req.body.url,
-            title: scrapedData.title,
-        ///
-        });
+        const createWebpage = new scrapeModel(scrapedData);
 
         await createWebpage.save();
 
