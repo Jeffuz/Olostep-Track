@@ -1,6 +1,12 @@
+/* I imported tensorflow.js to categorize the data but it is not working as expected
+What i am stuck at downloading the model if you go to line 197 it is an example path to the model
+that idk how to get.
+*/
+
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const fs = require('fs').promises;
+const tf = require('@tensorflow/tfjs'); // Import TensorFlow.js
 
 const mongoose = require('mongoose');
 const ScrapeResult = require('./scrape_result');
@@ -134,6 +140,10 @@ let browser;
         });
       }
 
+    // After extracting data, categorize it
+    const categorizedResult = await categorizeData(result);
+    console.log('Categorized data:', JSON.stringify(categorizedResult, null, 2));
+
     // log results
     console.log('cleaned data:',JSON.stringify(result, null, 2));
 
@@ -184,7 +194,14 @@ async function autoScroll(page) {
   });
 }
 
-
+async function categorizeData(data) {
+  const model = await tf.loadLayersModel('path/to/model.json');
+  // Placeholder for categorization logic
+  // Load your model and categorize the data here
+  // Example: const model = await tf.loadLayersModel('path/to/model.json');
+  // const predictions = model.predict(tf.tensor(data));
+  return data; // Return categorized data
+}
 
 // Usage
 
