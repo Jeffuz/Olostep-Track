@@ -20,15 +20,7 @@ async function scrapeWebpage(url, options = {}) {
 let browser;
   try {
     // Launch the browser
-     browser = await puppeteer.launch({
-        headless: "new",
-        args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--remote-debugging-port=9222'],
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
-     }); 
+     browser = await puppeteer.launch(); 
     const page = await browser.newPage();
 
 
