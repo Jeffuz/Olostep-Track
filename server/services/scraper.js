@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const fs = require('fs').promises;
+// const fs = require('fs').promises;
 
-const ScrapeResult = require('./scrape_result');
+// const ScrapeResult = require('./scrape_result');
 
 async function scrapeWebpage(url, options = {}) {
 
@@ -166,20 +166,5 @@ async function autoScroll(page) {
     });
   });
 }
-
-
-
-// Usage
-
-
-const targetUrl = 'https://jasonyay210.github.io/portfolio/'; // Replace with target URL
-scrapeWebpage(targetUrl, {
-  //headless: false,
-  scrollToBottom: true,
-  extractImages: true,
-  extractLinks: true,
-  customClass: 'some-class',
-  outputFile: 'scrape_result.json',
-});
 
 module.exports = scrapeWebpage;

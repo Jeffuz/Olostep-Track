@@ -1,3 +1,5 @@
+const { validationResult } = require("express-validator");
+
 url = () => [
     body('url')
         .isURL()
@@ -9,6 +11,7 @@ exports.validateRequest = (req, res, next) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    console.log("here");
 
     return next();
 }

@@ -1,13 +1,22 @@
 const express = require("express");
 const scrapeModel = require("../model/scrape_result");
+const scrapeWebpage = require("../services/scraper");
+const { validateRequest } = require("../middleware");
+
 
 const router = express.Router();
 
-router.post(async (req, res) => {
+router.post("", validateRequest, async (req, res) => {
     try {
-        const scrapedData = scrapeWebpage(req.body.url);
+        const scrapedData = await scrapeWebpage(
+            req.body.url, {scrollToBottom: true,
+            extractImages: true,
+            extractLinks: true,
+            customClass: 'some-class',
+            outputFile: 'scrape_result.json'});
 
         const createWebpage = new scrapeModel({
+            url: url,
             title: scrapedData.title,
         ///
         });
