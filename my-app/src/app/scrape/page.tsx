@@ -8,7 +8,8 @@ import { FaArrowRight, FaCode, FaBrush, FaChartBar } from "react-icons/fa";
 // Syntax highlight for unscraped data
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import pretty from 'pretty';
+import pretty from "pretty";
+import Link from "next/link";
 
 // Model
 interface ScrapeDataItem {
@@ -19,7 +20,7 @@ interface ScrapeDataItem {
     width: number;
     height: number;
   };
-  clean_data: {
+  clear_data: {
     url: string;
     title: string;
     paragraphs: string[];
@@ -69,7 +70,7 @@ const ScrapePage = () => {
 
         // Valid response, save scraped content
         const data = await response.json();
-        // console.log(data)
+        console.log(data.clear_data);
         setScrapeData(data);
       } catch (error) {
         console.error("Error:", error);
@@ -134,8 +135,54 @@ const ScrapePage = () => {
     // Clean Page
     if (currentPage === "cleaned") {
       return (
-        <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
-          {/* <div>{scrapeData.clear_data}</div> */}
+        <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar flex flex-col gap-5">
+          {/* Url */}
+          <div>
+            <span className="text-lg font-semibold">URL: </span>
+            <Link href={`${scrapeData.clear_data.url}`} target="_blank">
+              <span className="text-blue-600 hover:underline">
+                {scrapeData.clear_data.url}
+              </span>
+            </Link>
+          </div>
+          {/* Title */}
+          <div>
+            <span className="text-lg font-semibold">Title:</span>{" "}
+            {scrapeData.clear_data.title}
+          </div>
+          {/* Paragraphs */}
+          <div>
+            <span className="text-lg font-semibold">Paragraphs:</span>{" "}
+            {scrapeData.clear_data.paragraphs.map((paragraph, index) => (
+              <div key={index}>{paragraph}</div>
+            ))}
+          </div>
+          {/* Images */}
+          <div>
+            <span className="text-lg font-semibold">Images:</span>
+            <ul>
+              {scrapeData.clear_data.images.map((image, index) => (
+                <li key={index}>{image}</li>
+              ))}
+            </ul>
+          </div>
+          {/* Links */}
+          <div>
+            <div className="text-lg font-semibold">Links:</div>
+            <ul>
+              {scrapeData.clear_data.links.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.href}
+                    target="_blank"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       );
     }
