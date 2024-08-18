@@ -7,7 +7,7 @@ const TeamCard = ({ name, role, image }: any) => {
     <div className="text-center">
       <div className="relative w-24 h-24 mx-auto">
         <Image
-          className="rounded-full"
+          className="rounded-full aspect-square"
           src={image}
           alt={name}
           width={96}
@@ -50,14 +50,14 @@ const TeamCards = () => {
             image="/Sravya_chandolu.png"
           />
           <TeamCard
-            name="Jeff Zhang"
-            role="Frontend Developer"
-            image="/jeffzhang.jpg"
+            name="Abdul Samad"
+            role="Backend Developer"
+            image="/abdul_samad.png"
           />
           <TeamCard
-            name="Jeff Zhang"
-            role="Frontend Developer"
-            image="/jeffzhang.jpg"
+            name="Andrew Zou"
+            role="Backend Developer"
+            image="/andrew_zou.png"
           />
         </div>
       </div>
