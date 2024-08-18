@@ -14,6 +14,12 @@ for scraper.js its using jason's portfolio website
 Step 1: be on the same directory as the scraper file
 step 2: run the command "node scraper.js"
 
+# Frontend
+Getting Started
+- cd my-app
+- npm i
+- npm run dev
+
 
 
 
