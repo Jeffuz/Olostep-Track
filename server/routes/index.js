@@ -16,7 +16,7 @@ router.post("", validateRequest, async (req, res) => {
             outputFile: 'scrape_result.json'});
 
         const createWebpage = new scrapeModel({
-            url: url,
+            url: req.body.url,
             title: scrapedData.title,
         ///
         });
