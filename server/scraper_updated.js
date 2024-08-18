@@ -101,7 +101,7 @@ await page.waitForSelector('#element', { visible: true });
     // Saving to mongo
     const scrapeResult = new ScrapeResult(result);
     await scrapeResult.save();
-    console.log('Scape result saved to MongoDB for: ${url}');
+    console.log('Scape result saved to MongoDB');
 
       return result;
 
