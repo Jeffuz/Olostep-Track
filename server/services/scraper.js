@@ -27,7 +27,6 @@ let browser;
             '--disable-dev-shm-usage',
             '--disable-gpu',
             '--remote-debugging-port=9222'],
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
      }); 
     const page = await browser.newPage();
 
