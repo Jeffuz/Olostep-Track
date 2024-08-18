@@ -9,9 +9,15 @@ import { FaArrowRight, FaCode, FaBrush, FaChartBar } from "react-icons/fa";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+// Models
+interface ScrapeDataItem {
+  raw_data: string;
+  clean_data: string;
+}
+
 const ScrapePage = () => {
   const searchParams = useSearchParams();
-  const [scrapeData, setScrapeData] = useState<string | null>(null);
+  const [scrapeData, setScrapeData] = useState<ScrapeDataItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [userUrl, setUserUrl] = useState("");
 
@@ -36,7 +42,7 @@ const ScrapePage = () => {
     const fetchScrapedData = async (url: string) => {
       try {
         // HTTP request
-        const response = await fetch("/api/scrape", {
+        const response = await fetch("api/scrape", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -46,7 +52,8 @@ const ScrapePage = () => {
 
         // Valid response, save scraped content
         const data = await response.json();
-        setScrapeData(data.html);
+        // console.log(data)
+        setScrapeData(data);
       } catch (error) {
         console.error("Error:", error);
       } finally {
@@ -99,7 +106,7 @@ const ScrapePage = () => {
             style={solarizedlight}
             className="custom-scrollbar"
           >
-            {scrapeData}
+            {scrapeData[0].raw_data}
           </SyntaxHighlighter>
         </div>
       );
@@ -109,7 +116,7 @@ const ScrapePage = () => {
     if (currentPage === "cleaned") {
       return (
         <div className="w-full bg-white p-6 rounded-lg shadow-2xl overflow-y-auto h-[75vh] custom-scrollbar">
-          <div>Clean</div>
+          <div>{scrapeData[1].clean_data}</div>
         </div>
       );
     }
@@ -157,7 +164,7 @@ const ScrapePage = () => {
               <div className="text-sm">Cleaned</div>
             </button>
             {/* Analytics */}
-            <button
+            {/* <button
               onClick={() => setCurrentPage("analytics")}
               className={`flex gap-1 text-center py-2 cursor-pointer transition px-4 ${
                 currentPage === "analytics"
@@ -167,7 +174,7 @@ const ScrapePage = () => {
             >
               <FaChartBar size={18} className="inline-block" />
               <div className="text-sm">Analytics</div>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import * as cheerio from "cheerio";
 
 export async function POST(req: Request) {
   let browser;
@@ -9,11 +10,11 @@ export async function POST(req: Request) {
 
     // initalize
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       defaultViewport: null,
     });
 
-    //  open page
+    // open page
     const page = await browser.newPage();
 
     // go to url
@@ -23,8 +24,21 @@ export async function POST(req: Request) {
 
     // get all content
     const content = await page.content();
-    // console.log(content);
-    return NextResponse.json({ html: content }, { status: 200 });
+
+    // load content to cheerio
+    const $ = cheerio.load(content);
+
+    // remove script and style tags
+    $("script, style").remove();
+
+    // get text
+    const cleanData = $("body").text().replace(/\s+/g, " ").trim();
+
+    // return raw and clean
+    return NextResponse.json(
+      [{ raw_data: content }, { clean_data: cleanData }],
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json(
       { message: "Failed to scrape content", error: error.message },
